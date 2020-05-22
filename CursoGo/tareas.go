@@ -119,4 +119,36 @@ func main(){
 
 	fmt.Println("--------------")
 	lista.listaCompletados()
+
+
+	mapaTareas := make(map[string]*taskList)
+
+	mapaTareas["Nestor"] = lista
+
+
+	t4 := &task{
+		nombre: "Completar curso de React",
+		descripcion : "Completar el curso esta semana",
+		completado: false,
+	}
+
+	t5 := &task{
+		nombre: "Completar curso de HTML",
+		descripcion : "Completar el curso esta semana",
+		completado: false,
+	}
+
+	lista2 := &taskList{
+		tasks: []*task{
+			t4, t5,
+		},
+	}
+
+	mapaTareas["Ricardo"] = lista2
+
+	fmt.Println("----Tareas Nestor----")
+	mapaTareas["Nestor"].imprimirLista()
+
+	fmt.Println("----Tareas Ricardo----")
+	mapaTareas["Ricardo"].imprimirLista()
 }
