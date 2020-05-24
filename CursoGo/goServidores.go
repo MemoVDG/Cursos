@@ -21,9 +21,19 @@ func main(){
 		"http://instagram.com",
 	}
 
-	for _, servidor := range(servidores){
-		// Con la palabra reservada "go" antes de la funcion le decimos que sera concurrente
-		go revisarServidor(servidor, canal)
+	i:= 0
+	// For infinito, en Go no hay while
+	for{
+		if i > 2 {
+			break
+		}
+		for _, servidor := range(servidores){
+			// Con la palabra reservada "go" antes de la funcion le decimos que sera concurrente
+			go revisarServidor(servidor, canal)
+		}
+		time.Sleep(1 * time.Second)
+		fmt.Println(<-canal)
+		i++
 	}
 
 	// Debemos de estar a la escucha de los canales, si solo se pone un
