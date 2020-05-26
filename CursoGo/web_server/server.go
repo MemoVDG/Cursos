@@ -41,9 +41,14 @@ func (s *Server) Listen() error{
 
 
 // Manejador de las rutas
-func (s *Server) Handle(path string, handler http.HandlerFunc){
-	// Rules es el map de los paths con la funcion que le corresponde a esa ruta
-	s.router.rules[path] = handler
+func (s *Server) Handle(method string, path string, handler http.HandlerFunc){
+	// Rules es el map de los PATHS y METHODS con la funcion que le corresponde a esa ruta
+	// Se tiene que inicializar el mapa
+	_, exist := s.router.rules[path]
+	if !exist{
+		s.router.rules[path] = make(map[string]http.HandlerFunc)
+	}
+	s.router.rules[path][method] = handler
 }
 
 /* 
