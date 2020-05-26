@@ -7,12 +7,12 @@ import (
 	"os"
 )
 
-type calc struct{
+type Calc struct{
 
 }
 
 // Le decimos que la funcion operate es parte del struct calc
-func (calc) operate(entrada string, operador string) int {
+func (Calc) Operate(entrada string, operador string) int {
 		entradaLimpia := strings.Split(entrada, operador)
 		operador1 := parsear(entradaLimpia[0])
 		operador2 := parsear(entradaLimpia[1])
@@ -42,19 +42,9 @@ func parsear(entrada string) int {
 	return operador
 }
 
-func leerEntrada() string{
+func LeerEntrada() string{
 	// Leemos la entrada de consola
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	return scanner.Text()
 } 
-
-func main()  {
-
-	entrada := leerEntrada()
-	operador := leerEntrada()
-
-
-	c := calc{}
-	fmt.Println(c.operate(entrada, operador))
-}
