@@ -15,7 +15,7 @@ export default class extends React.Component {
 				<header>Podcast</header>
 				<div className='channels'>
 					{channels.map((channel) => (
-						<Link href='/channel' prefetch>
+						<Link key={channel.id} href={`/channel?id=${channel.id}`} prefetch>
 							<a className='channel'>
 								<img src={channel.urls.logo_image.original}></img>
 								<p>{channel.title}</p>
