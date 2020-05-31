@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default class extends React.Component {
 	static async getInitialProps({ query }) {
 		let idChannel = query.id;
@@ -30,15 +32,27 @@ export default class extends React.Component {
 		return (
 			<div>
 				<header>Podcast</header>
+				<img src={channel.urls.logo_image.original} />
 				<h1>{channel.title} </h1>
 				<h1>Ultimos capitulos</h1>
+
 				{audioClips.map((item) => (
-					<div>{item.title}</div>
+					<Link key={item.id} href={`/podcast?id=${item.id}`}>
+						<a>
+							<div className='chapterCard'>
+								<h3>Capitulo: {item.title} </h3>
+								<h4>Reproducir &#9658;</h4>
+								<p>Descripcion: {item.description}</p>
+							</div>
+						</a>
+					</Link>
 				))}
 
 				<h1>Series</h1>
 				{series.map((item) => (
-					<div>{item.title}</div>
+					<div className='chapterCard'>
+						<h3>Nombre: {item.title} </h3>
+					</div>
 				))}
 				<style jsx>{`
 					header {
@@ -48,28 +62,39 @@ export default class extends React.Component {
 						text-align: center;
 					}
 
-					.channels {
-						display: grid;
-						grid-gap: 15px;
-						padding: 15px;
-						grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-					}
-
-					.channel {
+					img {
+						max-width: 200px;
 						display: block;
-						border-radius: 3px;
-						box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
-						margin-bottom: 0.5em;
+						margin-left: auto;
+						margin-right: auto;
+						margin-top: 10px;
 					}
 
-					.channel img {
-						width: 100%;
-					}
-
-					h2 {
+					.chapters {
+						max-width: 60%;
+						display: block;
+						background: white;
+						margin-left: auto;
+						margin-right: auto;
+						border-radius: 20px;
 						padding: 5px;
-						font-size: 0.9em;
-						font-weight: 600;
+					}
+
+					a {
+						color: inherit;
+						text-decoration: none;
+					}
+
+					.chapterCard {
+						padding: 5px;
+						border-radius: 10px;
+						border-style: solid;
+						border-width: medium;
+						margin: 10px;
+					}
+
+					h1 {
+						padding: 5px;
 						margin: 0;
 						text-align: center;
 					}
