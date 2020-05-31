@@ -31,7 +31,9 @@ export default class extends React.Component {
 		const { channel, audioClips, series } = this.props;
 		return (
 			<div>
-				<header>Podcast</header>
+				<header>
+					<h1>Podcast</h1>
+				</header>
 				<img src={channel.urls.logo_image.original} />
 				<h1>{channel.title} </h1>
 				<h1>Ultimos capitulos</h1>
@@ -41,7 +43,7 @@ export default class extends React.Component {
 						<a>
 							<div className='chapterCard'>
 								<h3>Capitulo: {item.title} </h3>
-								<h4>Reproducir &#9658;</h4>
+								<h4>Reproducir 🔊</h4>
 								<p>Descripcion: {item.description}</p>
 							</div>
 						</a>
@@ -50,7 +52,7 @@ export default class extends React.Component {
 
 				<h1>Series</h1>
 				{series.map((item) => (
-					<div className='chapterCard'>
+					<div className='chapterCard' key={item.id}>
 						<h3>Nombre: {item.title} </h3>
 					</div>
 				))}

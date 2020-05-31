@@ -12,7 +12,9 @@ export default class extends React.Component {
 		const { channels } = this.props;
 		return (
 			<div>
-				<header>Podcast</header>
+				<header>
+					<h1>Podcast</h1>
+				</header>
 				<div className='channels'>
 					{channels.map((channel) => (
 						<Link href={`/channel?id=${channel.id}`}>
@@ -27,7 +29,7 @@ export default class extends React.Component {
 					header {
 						color: #fff;
 						background: #8756ca;
-						padding: 15px;
+						padding: 1px;
 						text-align: center;
 					}
 
