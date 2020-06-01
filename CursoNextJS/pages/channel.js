@@ -1,7 +1,7 @@
 import Layout from '../components/Layout';
 import AudioClips from '../components/AudioClips';
 import Series from '../components/Series';
-import Error from 'next/error';
+import Error from './_error';
 
 export default class extends React.Component {
 	static async getInitialProps({ query, res }) {
