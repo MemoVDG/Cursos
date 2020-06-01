@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
-import Link from 'next/link';
+import Layout from '../components/Layout';
+import ChannelGrid from '../components/ChannelGrid';
 
 export default class extends React.Component {
 	static async getInitialProps() {
@@ -10,66 +11,11 @@ export default class extends React.Component {
 
 	render() {
 		const { channels } = this.props;
+
 		return (
-			<div>
-				<header>
-					<h1>Podcast</h1>
-				</header>
-				<div className='channels'>
-					{channels.map((channel) => (
-						<Link href={`/channel?id=${channel.id}`}>
-							<a className='channel'>
-								<img src={channel.urls.logo_image.original}></img>
-								<p>{channel.title}</p>
-							</a>
-						</Link>
-					))}
-				</div>
-				<style jsx>{`
-					header {
-						color: #fff;
-						background: #8756ca;
-						padding: 1px;
-						text-align: center;
-					}
-
-					.channels {
-						display: grid;
-						grid-gap: 15px;
-						padding: 15px;
-						grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-					}
-
-					.channel {
-						display: block;
-						border-radius: 3px;
-						box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
-						margin-bottom: 0.5em;
-					}
-
-					.channel img {
-						width: 100%;
-					}
-
-					h2 {
-						padding: 5px;
-						font-size: 0.9em;
-						font-weight: 600;
-						margin: 0;
-						text-align: center;
-					}
-				`}</style>
-
-				<style jsx global>
-					{`
-						body {
-							margin: 0;
-							font-family: system-ui;
-							background: yellow;
-						}
-					`}
-				</style>
-			</div>
+			<Layout title='Podcast'>
+				<ChannelGrid channels={channels} />
+			</Layout>
 		);
 	}
 }
