@@ -12,16 +12,24 @@ type Router struct {
 
 func NewRouter() *Router {
 	return &Router{
-		rules: make(map[string]http.HandlerFunc),
+		rules: make(map[string]map[string]http.HandlerFunc),
 	}
 }
 
-// Regresamos dos valores booleanos indicando el primero que existe la ruta y el segundo indica si existe el verbo
-func (r *Router) FindHandler(path string, method string) (bool http.HandlerFunc, bool http.HandlerFunc) {
-	// Verificamos que existe la url y el verbo o metodo
-	_, exist := r.rules[path]
-	handler, methodExist := r.rule[path][method]
+// Recibimos la url y el metodo (POST, PUT, GET, DELETE)
+func (r *Router) FindHandler(path string, method string) (http.HandlerFunc, bool, bool) {
 
+	// Primero verificamos que existe la url
+	_, exist := r.rules[path]
+
+	/*
+		Despues verificamos si existe la UTL para ese METODO,
+		Por ejemplo que exista un /api con un metodo POST
+	*/
+
+	handler, methodExist := r.rules[path][method]
+
+	// Devolvemos si tiene un handler, si el metodo existe y si la ruta existe
 	return handler, methodExist, exist
 }
 
@@ -33,15 +41,22 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 	// El http.ResponseWriter sirve para responderle a los clientes
 	// http.Request contiene el body del request
 
-	// Extraemos el path de request para saber cual es la ruta que se esta bucando
+	// Extraemos el PATH y el METHOD de request para saber cual es la ruta que se esta bucando
 	handler, methodExist, exist := r.FindHandler(request.URL.Path, request.Method)
 
+	// Verifiucamos si el path exsite
 	if !exist {
 		// Retornamos que no existe
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
+	if !methodExist {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Verificamos si el Metodo existe
 	if !methodExist {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return

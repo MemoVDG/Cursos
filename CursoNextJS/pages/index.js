@@ -1,33 +1,35 @@
+import fetch from 'isomorphic-fetch';
+import Layout from '../components/Layout';
+import ChannelGrid from '../components/ChannelGrid';
+import Error from 'next/error';
+
 export default class extends React.Component {
+	static async getInitialProps({ res }) {
+		try {
+			let req = await fetch('https://api.audioboom.com/channels/recommended');
+			let { body: channels } = await req.json();
+			return { channels, statusCode: 200 };
+		} catch (e) {
+			res.statusCode = 503;
+			// 503 indica que hay un error de conectividad
+			return {
+				channels: null,
+				statusCode: 503,
+			};
+		}
+	}
+
 	render() {
+		const { channels, statusCode } = this.props;
+
+		if (statusCode != 200) {
+			return <Error statusCode={statusCode} />;
+		}
+
 		return (
-			<div>
-				<h1>Hola Platzi!</h1>
-				<p>Bienvenido al curso de Next.js</p>
-				<img src='/static/logo.png' alt='podcast-logo' />
-				<style jsx>{`
-					h1 {
-						color: red;
-					}
-
-					:global(p) {
-						color: green;
-					}
-					img {
-						max-width: 50%;
-						display: block;
-						margin: auto;
-					}
-				`}</style>
-
-				<style jsx global>
-					{`
-						body {
-							background: yellow;
-						}
-					`}
-				</style>
-			</div>
+			<Layout title='Podcast'>
+				<ChannelGrid channels={channels} />
+			</Layout>
 		);
 	}
 }
