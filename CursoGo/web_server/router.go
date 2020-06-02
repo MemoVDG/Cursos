@@ -5,8 +5,6 @@ import (
 )
 
 type Router struct {
-	// Creamos un mapa de mapas en donde vendra el tipo de call y la ruta
-	// ejemplo "POST" de "api"
 	rules map[string]map[string]http.HandlerFunc
 }
 
@@ -51,6 +49,12 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, request *http.Request) {
 		return
 	}
 
+	if !methodExist {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Verificamos si el Metodo existe
 	if !methodExist {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
