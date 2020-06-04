@@ -4,6 +4,13 @@ import Series from '../components/Series';
 import Error from './_error';
 
 export default class extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			openPodcast: null,
+		};
+	}
+
 	static async getInitialProps({ query, res }) {
 		let idChannel = query.id;
 		try {
@@ -39,16 +46,26 @@ export default class extends React.Component {
 		}
 	}
 
+	openPodcast = (event, podcast) => {
+		event.preventDefault();
+		this.setState({
+			openPodcast: podcast,
+		});
+	};
+
 	render() {
 		const { channel, audioClips, series, statusCode } = this.props;
+		const { openPodcast } = this.state;
 
 		if (statusCode !== 200) {
 			return <Error statusCode={statusCode} />;
 		}
 		return (
 			<Layout title={channel.title}>
-				{console.log(channel)}
 				<img src={channel.urls.logo_image.original} />
+
+				{openPodcast && <div>Hay un podcast abierto</div>}
+
 				<h1>{channel.title} </h1>
 				<h1>Ultimos capitulos</h1>
 				<AudioClips audioClips={audioClips} />
