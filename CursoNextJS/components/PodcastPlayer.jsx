@@ -13,7 +13,9 @@ export default class PodcastPlayer extends React.Component {
 					)}
 				</nav>
 
-				<picture></picture>
+				<picture>
+					<div></div>
+				</picture>
 			</div>
 		);
 	}
