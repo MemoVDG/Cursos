@@ -19,4 +19,9 @@ console.log(process);
 // Imprime el directorio del archivo
 console.log(__dirname);
 
+// Imprime el nombre 
 console.log(__filename);
+
+global.myVariable = 'OK'
+
+console.log(myVariable)
