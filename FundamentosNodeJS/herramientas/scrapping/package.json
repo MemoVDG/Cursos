@@ -1,0 +1,21 @@
+{
+  "name": "scrapping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-server-livereload": "^1.9.2",
+    "puppeteer": "^4.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build" : "gulp build",
+    "serve" : "gulp serve",
+    "start" : "gulp"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
