@@ -28,6 +28,7 @@ def probabilidad_pares(manos):
         for carta in mano:
             valores.append(carta[1])
         
+        # Nos agrupa los elementos y las veces que aparece
         counter = dict(collections.Counter(valores))
         for val in counter.values():
             if val == 2:
@@ -36,7 +37,6 @@ def probabilidad_pares(manos):
 
         probabilidad_par = pares / intentos
     print(f'La probabilidad de obtener un par en una mano de {tamano_mano} baraja es {probabilidad_par}')
-
 
 def main(tamano_mano, intentos):
     barajas = crear_baraja()
@@ -47,7 +47,7 @@ def main(tamano_mano, intentos):
         mano = obtener_mano(barajas, tamano_mano)
         manos.append(mano)
     
-    probabilidad_pares(manos)
+    probabilidad_corrida(manos)
     
 
 
