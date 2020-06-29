@@ -27,6 +27,8 @@ app.get('/date/:date', (req, res) => {
   }
 });
 
+// Le permite a express poder interpretar datos de tipo JSON de bodyparser
+app.use(express.json());
 moviesAPI(app);
 
 app.listen(config.port, () => {

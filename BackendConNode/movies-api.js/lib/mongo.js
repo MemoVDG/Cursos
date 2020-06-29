@@ -18,11 +18,11 @@ class MongoLib {
       MongoLib.connection = new Promise((resolve, reject) => {
         this.client.connect((err) => {
           if (err) {
+            console.log(err);
             reject(err);
           }
 
           console.log('Connected succesfully to mongo');
-          console.log(this.client);
           resolve(this.client.db(this.dbName));
         });
       });

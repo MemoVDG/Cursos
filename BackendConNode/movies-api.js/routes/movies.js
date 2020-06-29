@@ -46,6 +46,7 @@ function moviesAPI(app) {
     const { body: movie } = req;
     try {
       const createMovieId = await movieService.createMovie({ movie });
+
       res.status(201).json({
         data: createMovieId,
         message: 'movie created',

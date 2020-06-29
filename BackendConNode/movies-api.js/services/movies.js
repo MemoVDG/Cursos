@@ -2,7 +2,7 @@ const MongoLib = require('../lib/mongo');
 
 class MoviesService {
   constructor() {
-    this.collection = 'movies_db';
+    this.collection = 'movies';
     this.mongoDB = new MongoLib();
   }
   async getMovies({ tags }) {
@@ -22,7 +22,7 @@ class MoviesService {
   }
 
   async updateMovie({ movieId, movie } = {}) {
-    const updatedMovie = await this.mongoDB.create(
+    const updatedMovie = await this.mongoDB.update(
       this.collection,
       movieId,
       movie
