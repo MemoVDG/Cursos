@@ -3,7 +3,9 @@ const app = express();
 const moment = require('moment');
 const { config } = require('./config/index');
 const moviesAPI = require('./routes/movies');
-const { logErrors, errorHanlder } = require('./utils/middleware/errorHandlers');
+const { logErrors, errorHanlder, wrapErrors } = require('./utils/middleware/errorHandlers');
+const notFoundHandler = require('./utils/middleware/notFoundHandler');
+
 
 app.get('/', (req, res) => {
   res.send('Hello world');
@@ -32,7 +34,12 @@ app.get('/date/:date', (req, res) => {
 app.use(express.json());
 moviesAPI(app);
 
+// Capturar error 404
+app.use(notFoundHandler);
+
+// Manejadores de errores
 app.use(logErrors);
+app.use(wrapErrors)
 app.use(errorHanlder);
 
 app.listen(config.port, () => {
