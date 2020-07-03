@@ -6,7 +6,11 @@ const {
   updateMovieSchema
 } = require('../utils/schemas/movies');
 
+const cacheResponse = ('../utils/cacheResponse');
+const {FIVE_MINUTES_IN_SECONDS, SIXTY_MINUTES_IN_SECONDS} = require('../utils/time');
+
 const validationHandler = require('../utils/middleware/validationHandler');
+
 
 // Recibimos un app de tipo express
 function moviesAPI(app) {
@@ -23,6 +27,7 @@ function moviesAPI(app) {
   // que puede tardar en llegar, entonces se pone asincrona para
   // no bloquear el hilo principal
   router.get('/', async (req, res, next) => {
+    cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
     const { tags } = req.query;
 
     try {
@@ -38,6 +43,7 @@ function moviesAPI(app) {
 
   router.get('/:movieId', validationHandler({movieId: movieIdSchema}, 'params'), async (req, res, next) => {
     const { movieId } = req.params;
+    cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
     try {
       const movies = await movieService.getMovie({ movieId });
       res.status(200).json({
