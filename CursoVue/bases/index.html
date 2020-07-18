@@ -9,43 +9,13 @@
 	</head>
 	<body>
 		<div id="app" :style="{ background: '#' + color}">
-			<img v-on:mouseover="toggleShowPrices" v-on:mouseout="toggleShowPrices" :src="img" :alt="name" />
-			<h1 :class="changePercent > 0 ? 'green' : 'red' ">
-				<!-- Propiedad computada -->
-				{{ title }}
+			<!-- Pasar informacion del componente padre al hijo con props -->
 
-				<!-- 
-          V-show usa el css style:display y
-          V-if remueve el elemento del DOM
-        -->
-				<span v-if="changePercent > 10">Mayor</span>
-				<span v-else>
-					Menor
-				</span>
-
-				<span v-show="changePercent > 10">VShow</span>
-				<span v-show="changePercent <= 10">V-Show 2</span>
-			</h1>
-
-			<input type="number" v-model="value" />
-			<span>{{ convertedValue }}</span>
-
-			<!-- Mapear elementos de un array -->
-			<ul>
-				<li v-for="(p, i) in prices" :key="p">{{i}} - {{ p }}</li>
-			</ul>
-
-			<span v-on:click="toggleShowPrices"> {{showPrices ? 'Esconder precios' : 'Ver Precios'}}</span>
-
-			<ul v-show="showPrices">
-				<li
-					class="uppercase"
-					v-for="(p, i) in pricesWithDays"
-					:class="{ orange: p.value == price, red: p.value < price, green: p.value > price}"
-				>
-					{{ i }} - {{p.value}} - {{p.day}}
-				</li>
-			</ul>
+			<!-- 
+				Comunicacion de padres a hijos es por props
+				Comunicacion de hijos a padres es por eventos 
+			-->
+			<coin-detail v-on:change-color="updateColor" :coin="btc"> </coin-detail>
 		</div>
 		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 		<script src="app.js"></script>

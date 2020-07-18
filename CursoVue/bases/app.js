@@ -1,60 +1,100 @@
-new Vue({
-	el: '#app',
-
+Vue.component('CoinDetail', {
 	data() {
 		return {
-			name: 'Bitcoin',
-			symbol: 'BTC',
 			value: 0,
-			img:
-				'https://lh3.googleusercontent.com/proxy/jPPDC1NNi2Is8xj2NwpHCKKuCr9spfV-nkxDN1nnqtRptzFUgU8Huyoau3uEf8RaMKAc-rUYWvE7iufbd_lLBjXKF5syulMzfMfm0Eb4fTwZHc9Svk3-AM6Gitm8',
-			changePercent: 10,
-			prices: [50, 865, 312, 897, 4, 96, 2143, 785],
-			pricesWithDays: [
-				{ day: 'Lunes', value: 8400 },
-				{ day: 'Martes', value: 7900 },
-				{ day: 'Miercoles', value: 8200 },
-				{ day: 'Jueves', value: 9000 },
-				{ day: 'Viernes', value: 9400 },
-				{ day: 'Sabado', value: 10000 },
-				{ day: 'Domingo', value: 10200 },
-			],
 			showPrices: false,
-			price: 8400,
-			color: 'A4D4F4',
 		};
 	},
-
+	props: ['coin'],
+	methods: {
+		toggleShowPrices() {
+			this.showPrices = !this.showPrices;
+			// Se le pueden pasar parametros
+			this.$emit('change-color', this.showPrices ? 'FCFAFC' : 'AFFCAD');
+		},
+		// Emitimos evento para modificar propiedad en el padre
+	},
 	// Funciones que cambian valores dependiendo de otro valor
 	// es decir si cambia name o symbole el metodo se va a activar
 	computed: {
 		// Siempre regresan algo
 		title() {
-			return `${this.name} - ${this.symbol}`;
+			return `${this.coin.name} - ${this.coin.symbol}`;
 		},
 		convertedValue() {
 			if (!this.value) {
 				return 0;
 			}
-
-			return this.value / this.price;
+			return this.value / this.coin.price;
 		},
 	},
 
-	// Watcher son funciones que ejecutan un codigo
-	// Es decir que a partir del cambio de una variable se ejecuta una funcion
-	watch: {
-		// Se definen con el nombre de la variable que se va observar
-		showPrices(newValue, oldValue) {
-			// Recibe el viejo y el nuevo valor
-			console.log(newValue, oldValue);
-		},
+	template: `
+	<div>
+		<img v-on:mouseover="toggleShowPrices" v-on:mouseout="toggleShowPrices" :src="coin.img" :alt="coin.name" />
+		
+		<h1 :class="coin.changePercent > 0 ? 'green' : 'red' ">
+				<!-- Propiedad computada -->
+				{{ title }}
+
+				<!-- 
+          V-show usa el css style:display y
+          V-if remueve el elemento del DOM
+        -->
+				<span v-if="coin.changePercent > 10">Mayor</span>
+				<span v-else>
+					Menor
+				</span>
+		</h1>
+
+		<input type="number" v-model="value" />
+		<span>{{ convertedValue }}</span>
+		<br>
+		<br>
+		<span v-on:click="toggleShowPrices"> {{showPrices ? 'Esconder precios 🙈  ' : 'Ver Precios 🐵 '}}</span>
+		<ul v-show="showPrices">
+			<li
+				class="uppercase"
+				v-for="(p, i) in coin.pricesWithDays"
+				:class="{ orange: p.value == coin.price, red: p.value < coin.price, green: p.value > coin.price}"
+			>
+					{{ i }} - {{p.value}} - {{p.day}}
+			</li>
+		</ul>
+				
+	</div>
+	`,
+});
+
+new Vue({
+	el: '#app',
+
+	data() {
+		return {
+			btc: {
+				name: 'Bitcoin',
+				symbol: 'BTC',
+				img: 'https://pngimg.com/uploads/bitcoin/bitcoin_PNG48.png',
+				changePercent: 10,
+				prices: [50, 865, 312, 897, 4, 96, 2143, 785],
+				pricesWithDays: [
+					{ day: 'Lunes', value: 8400 },
+					{ day: 'Martes', value: 7900 },
+					{ day: 'Miercoles', value: 8200 },
+					{ day: 'Jueves', value: 9000 },
+					{ day: 'Viernes', value: 9400 },
+					{ day: 'Sabado', value: 10000 },
+					{ day: 'Domingo', value: 10200 },
+				],
+				price: 8400,
+			},
+			color: 'A4D4F4',
+		};
 	},
 	methods: {
-		toggleShowPrices() {
-			this.showPrices = !this.showPrices;
-
-			this.color = this.color.split('').reverse().join('');
+		// Este evento es activado por el component hijo
+		updateColor(color) {
+			this.color = color || this.color.split('').reverse().join('');
 		},
 	},
 });

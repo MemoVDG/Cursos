@@ -17,6 +17,8 @@ new Vue({
 					courseTime: this.time,
 				});
 				this.accumulatedTime += parseInt(this.time);
+				this.course = '';
+				this.time = 0;
 			}
 		},
 	},
