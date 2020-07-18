@@ -52,6 +52,10 @@ Vue.component('CoinDetail', {
 		<br>
 		<br>
 		<span v-on:click="toggleShowPrices"> {{showPrices ? 'Esconder precios 🙈  ' : 'Ver Precios 🐵 '}}</span>
+		
+		<slot name="text"></slot>
+		<slot name="link"></slot>
+
 		<ul v-show="showPrices">
 			<li
 				class="uppercase"
@@ -90,6 +94,15 @@ new Vue({
 			},
 			color: 'A4D4F4',
 		};
+	},
+
+	// Eventos del ciclo de vida
+	created() {
+		// Se ocupa al obtener informacion de un API rest
+		console.log('created');
+	},
+	mounted() {
+		console.log('mounted');
 	},
 	methods: {
 		// Este evento es activado por el component hijo
