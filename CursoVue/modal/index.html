@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Curso Basico de Vue.js | Platzi</title>
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body>
+		<div id="app">
+			<div class="container" v-on:click="openModal">
+				<img src="https://s.tcdn.co/9f0/ed9/9f0ed9e8-1c15-3abb-a633-fff2ffd3fec9/1.png" alt="" />
+				<h1>Click on me</h1>
+			</div>
+			<modal v-on:close-modal="openModal" :show-modal="showModal" text="Cool">
+				<template v-slot:message>
+					<h1>Awesom you are doing an amazing job!</h1>
+				</template>
+			</modal>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="app.js"></script>
+	</body>
+</html>
