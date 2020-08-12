@@ -60,7 +60,18 @@ module.exports = {
         }
         return course; 
     },
+    deleteCourse: async(root, { _id} ) => {
+        let db;
+        try {
+            db = await connectDb();
+            // Eliminamos de la BD
+            await db.collection('courses').deleteOne({ _id: ObjectID(_id)});
+        } catch(error) {
+            console.log(error);
+        }
+        return _id;
 
+    },
     createStudent : async(root, { input }) => {
         let db;
         let student;
@@ -92,5 +103,45 @@ module.exports = {
             console.error(error);
         }
         return student; 
+    },
+    deleteStudent: async(root, { _id }) => {
+        let db;
+        try {
+            db = await connectDb();
+            // Eliminar de la BD
+            await db.collection('students').deleteOne({ _id: ObjectID(_id) });
+        } catch(error){
+            console.log(error);
+        }
+
+        return _id;
+    },
+
+    addPeople: async(root, { courseID, personID }) => {
+        let db;
+        let person;
+        let course;
+        console.log(courseID)
+        console.log(personID)
+        try {
+            db = await connectDb();
+            // Buscamos el curso y la persona para verificar que existan
+            course = await db.collection('courses').findOne({_id: ObjectID(courseID)})
+            person = await db.collection('students').findOne({_id: ObjectID(personID)});
+
+            if (!course || !person){
+                throw new Error('La persona o el curso no existe');
+            }
+
+            await db.collection('courses').updateOne(
+                {_id: ObjectID(courseID)},
+                // addToSet checa si hay un arreglo y lo agrega y si ya existe no agrega nada
+                { $addToSet: { people: ObjectID(personID)} }
+                )
+        } catch (error){
+            console.log(error);
+        }
+
+        return course;
     }
 }

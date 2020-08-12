@@ -5,6 +5,7 @@ type Course {
     teacher: String
     description: String!
     topic: String
+    people: [Student]
 }
 
 input CourseInput {
@@ -42,11 +43,11 @@ type Query {
     "Devuelve todos los cursos"
     getCourses: [Course]
     "Devuelve un curso"
-    getCourse(id: ID!): Course
+    getCourse(_id: ID!): Course
     "Devuelve todos los estudiantes"
     getStudents: [Student]
     "Devuelve un estudiante"
-    getStudent(id: ID!): Student
+    getStudent(_id: ID!): Student
 }
 
 type Mutation {
@@ -54,8 +55,14 @@ type Mutation {
     createCourse(input: CourseInput! ): Course
     "Edita un curso"
     editCourse(_id: ID!, input: CourseEditInput ): Course
+    "Eliminat curso"
+    deleteCourse(_id: ID!): String
     "Crear estudiante"
     createStudent(input: StudentInput! ): Student
     "Editar estudiante"
     editStudent(_id: ID!, input: StudentEditInput ): Student
+    "Eliminar estudiante"
+    deleteStudent(_id: ID!): String
+    "Agrega persona a un curso"
+    addPeople(courseID: ID!, personID: ID!): Course
 }

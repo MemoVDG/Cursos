@@ -25,7 +25,7 @@ async function connectDB(){
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
-
+        console.log('DB connected');
         connection = client.db(DB_NAME);
     } catch (error) {
         console.error('Couldt connecto to the db', MONGO_URI, error);
