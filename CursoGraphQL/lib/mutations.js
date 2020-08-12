@@ -2,6 +2,7 @@
 // Conectarnos a BD
 const connectDb = require('./db');
 const { ObjectID } = require('mongodb')
+const errorHanlder = require('./errorHanlder');
 
 /*
     Ejemplo de mutation de GraphiQL
@@ -38,7 +39,7 @@ module.exports = {
             // insertedId devuelve el ultimo ID insertado
             newCourse._id = course.insertedId;
         } catch(error){
-            console.error(error);
+            errorHanlder(error);
         }
         return newCourse;
     },
@@ -56,7 +57,7 @@ module.exports = {
             // Ya que editamos, buscamos el curso para devolverlo
             course = await db.collection('courses').findOne({_id: ObjectID(_id) });
         } catch(error){
-            console.error(error);
+            errorHanlder(error);
         }
         return course; 
     },
@@ -67,7 +68,7 @@ module.exports = {
             // Eliminamos de la BD
             await db.collection('courses').deleteOne({ _id: ObjectID(_id)});
         } catch(error) {
-            console.log(error);
+            errorHanlder(error);
         }
         return _id;
 
@@ -82,7 +83,7 @@ module.exports = {
             // insertedId devuelve el ultimo ID insertado
             input._id = student.insertedId;
         } catch(error){
-            console.error(error);
+            errorHanlder(error);
         }
         return input;
     },
@@ -100,7 +101,7 @@ module.exports = {
             // Ya que editamos, buscamos el curso para devolverlo
             student = await db.collection('students').findOne({_id: ObjectID(_id) });
         } catch(error){
-            console.error(error);
+            errorHanlder(error);
         }
         return student; 
     },
@@ -111,7 +112,7 @@ module.exports = {
             // Eliminar de la BD
             await db.collection('students').deleteOne({ _id: ObjectID(_id) });
         } catch(error){
-            console.log(error);
+            errorHanlder(error);
         }
 
         return _id;
@@ -121,8 +122,6 @@ module.exports = {
         let db;
         let person;
         let course;
-        console.log(courseID)
-        console.log(personID)
         try {
             db = await connectDb();
             // Buscamos el curso y la persona para verificar que existan
@@ -139,7 +138,7 @@ module.exports = {
                 { $addToSet: { people: ObjectID(personID)} }
                 )
         } catch (error){
-            console.log(error);
+            errorHanlder(error);
         }
 
         return course;
