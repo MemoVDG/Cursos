@@ -50,6 +50,21 @@ const { ObjectID } = require('mongodb')
         _id
         title
     }
+
+    // Directivas permite agregar condiciones a las queries
+        query getPeopleData($monitor: Boolean!, $avatar: Boolean!){
+            getPeople{
+                        _id
+                        name
+                        ... on Monitor @include(if: $monitor){
+                            phone
+                        }
+                        ... on Student @include(if: $avatar){
+                            avatar
+                            email
+                        }
+                }
+        }
 */
 
 module.exports = {
@@ -98,5 +113,26 @@ module.exports = {
             console.error(error);
         }
         return student;
+    },
+    searchItems: async(root, { keyword }) => {
+        let db;
+        let items;
+        let courses;
+        let people;
+        try{
+            db = await connectDb();
+            courses = await db.collection('courses').find(
+                { $text: { $search: keyword } }
+                ).toArray();
+            people = await db.collection('students').find(
+                { $text: { $search: keyword } }
+                ).toArray();
+            items = [...courses, ...people];
+        } catch(error){
+            console.log(error);
+        }
+
+        return items;
+        
     }
 }

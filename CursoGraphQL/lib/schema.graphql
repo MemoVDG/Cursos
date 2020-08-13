@@ -5,13 +5,35 @@ enum Level{
     AVANZADO
 }
 
+"""
+    Unions permiten agrupar colecciones de datos que no tengan fields en comun, para su implementacion se tiene
+    que crear un type, generacion del query
+    searchItems(keyword: "@gmail"){
+        __typename
+        ... on Course{
+            title
+            description
+        }
+        ... on Monitor{
+            name
+            phone
+        }
+        ... on Student{
+            name
+            email
+        }
+    }
+"""
+
+union GlobalSearch = Course | Student | Monitor
+
 "Esquemas de cursos"
 type Course {
     _id : ID!
     title: String!
     teacher: String
     description: String!
-    topic: String
+    topic: String @deprecated
     people: [Student]
     level: Level
 }
@@ -90,6 +112,8 @@ type Query {
     getPeople: [Person]
     "Devuelve un estudiante"
     getPerson(_id: ID!): Person
+    "Ejecuta una busqueda global"
+    searchItems(keyword: String!): [GlobalSearch]
 }
 
 type Mutation {
