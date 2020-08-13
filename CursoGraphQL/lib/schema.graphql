@@ -1,3 +1,10 @@
+"Valida los tipos de nivel"
+enum Level{
+    PRINCIPANTE
+    INTERMEDIO
+    AVANZADO
+}
+
 "Esquemas de cursos"
 type Course {
     _id : ID!
@@ -6,6 +13,7 @@ type Course {
     description: String!
     topic: String
     people: [Student]
+    level: Level
 }
 
 input CourseInput {
@@ -13,6 +21,7 @@ input CourseInput {
     teacher: String
     description: String!
     topic: String
+    level: Level
 }
 
 input CourseEditInput {
@@ -22,21 +31,54 @@ input CourseEditInput {
     topic: String
 }
 
-"Esquemas de estudiantes"
-type Student {
+"""
+    Las interfaces nos permiten agrupar tipos, para hacer consultas ocupamos
+    getPeople{
+        _id
+        name
+        email
+        ... on Student{
+            avatar
+        }
+        ... on Monitor{
+            phone
+        }
+  }
+"""
+interface Person{
     _id: ID
     name: String!
     email: String!
 }
 
-input StudentInput {
+"Esquemas de estudiantes"
+type Student implements Person {
+    _id: ID
     name: String!
     email: String!
+    avatar: String
 }
 
-input StudentEditInput {
+type Monitor implements Person {
+    _id: ID
+    name: String!
+    email: String!
+    phone: String
+}
+
+input PersonInput {
+    name: String!
+    email: String!
+    phone: String
+    avatar: String
+}
+
+input PersonEditInput {
     name: String
     email: String
+    phone: String
+    avatar: String
+
 }
 
 type Query {
@@ -45,9 +87,9 @@ type Query {
     "Devuelve un curso"
     getCourse(_id: ID!): Course
     "Devuelve todos los estudiantes"
-    getStudents: [Student]
+    getPeople: [Person]
     "Devuelve un estudiante"
-    getStudent(_id: ID!): Student
+    getPerson(_id: ID!): Person
 }
 
 type Mutation {
@@ -57,12 +99,12 @@ type Mutation {
     editCourse(_id: ID!, input: CourseEditInput ): Course
     "Eliminat curso"
     deleteCourse(_id: ID!): String
-    "Crear estudiante"
-    createStudent(input: StudentInput! ): Student
-    "Editar estudiante"
-    editStudent(_id: ID!, input: StudentEditInput ): Student
-    "Eliminar estudiante"
-    deleteStudent(_id: ID!): String
+    "Crear persona"
+    createPerson(input: PersonInput! ): Person
+    "Editar persona"
+    editPerson(_id: ID!, input: PersonEditInput ): Person
+    "Eliminar persona"
+    deletePerson(_id: ID!): String
     "Agrega persona a un curso"
     addPeople(courseID: ID!, personID: ID!): Course
 }
