@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
 
 # Utilities
@@ -36,4 +37,4 @@ def list_post(request):
             <figure><img src="{picture}"/></figure>
         """.format(**post))
 
-    return HttpResponse('<br>'.join(content))
+    return render(request, 'feed.html')
