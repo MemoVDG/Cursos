@@ -7,34 +7,40 @@ from datetime import datetime
 
 posts = [
     {
-        'name': 'Mont Blanc',
-        'user': 'Yesica Cortes',
+        'title': 'Mont Blanc',
+        'user': {
+            'name': 'Yesica Cortes',
+            'picture': 'http://picsum.photos/200/200?image=436'
+        },
         'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'picture': 'http://picsum.photos/200/200?image=1036'
+        'photo': 'http://picsum.photos/200/200?image=1036'
     },
     {
         'name': 'Lee Blanc',
-        'user': 'Raul Cortes',
+        'user': {
+            'name': 'Raul Cortes',
+            'picture': 'http://picsum.photos/200/200?image=136'
+        },
         'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'picture': 'http://picsum.photos/200/200?image=136'
+        'photo': 'http://picsum.photos/200/200?image=136'
     },
     {
         'name': 'Mont Ruiz',
-        'user': 'Mica Rues',
+        'user': {
+            'name': 'Mica Rues',
+            'picture': 'http://picsum.photos/200/200?image=36'
+        },
         'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'picture': 'http://picsum.photos/200/200?image=103'
+        'photo': 'http://picsum.photos/200/200?image=103'
     }
 ]
 
 def list_post(request):
     """List existing posts"""
-
-    content = []
-    for post in posts:
-        content.append("""
-            <p><strong>{name}</strong></p>
-            <p><small>{user} - <i>{timestamp}</i></small></p>
-            <figure><img src="{picture}"/></figure>
-        """.format(**post))
-
-    return render(request, 'feed.html')
+    return render(
+        request, 
+        'feed.html',
+        {
+            'posts': posts
+        }
+        )
