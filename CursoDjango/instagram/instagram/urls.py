@@ -19,8 +19,11 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from posts import views as post_views
+from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('posts/', post_views.list_post)
+    path('posts/', post_views.list_post, name='feed'),
+
+    path('users/login/', user_views.login_view, name='login')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
