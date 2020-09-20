@@ -39,7 +39,7 @@ def list_post(request):
     """List existing posts"""
     return render(
         request, 
-        'feed.html',
+        'posts/feed.html',
         {
             'posts': posts
         }
