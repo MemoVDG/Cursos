@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 # Create your views here.
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,13 @@ from users.models import Profile
 
 # Exceptions
 from django.db.utils import IntegrityError
+
+def update_profile(request):
+    return render(
+        request,
+        'users/update_profile.html'
+    )
+
 
 def login_view(request):
     if request.method == 'POST':
