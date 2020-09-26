@@ -1,43 +1,17 @@
 # Django
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 # Utilities
 from datetime import datetime
 
-posts = [
-    {
-        'title': 'Mont Blanc',
-        'user': {
-            'name': 'Yesica Cortes',
-            'picture': 'http://picsum.photos/200/200?image=436'
-        },
-        'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'photo': 'http://picsum.photos/200/200?image=1036'
-    },
-    {
-        'name': 'Lee Blanc',
-        'user': {
-            'name': 'Raul Cortes',
-            'picture': 'http://picsum.photos/200/200?image=136'
-        },
-        'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'photo': 'http://picsum.photos/200/200?image=136'
-    },
-    {
-        'name': 'Mont Ruiz',
-        'user': {
-            'name': 'Mica Rues',
-            'picture': 'http://picsum.photos/200/200?image=36'
-        },
-        'timestamp': datetime.now().strftime('%b %dth, %Y - %H:%M hrs'),
-        'photo': 'http://picsum.photos/200/200?image=103'
-    }
-]
+from posts.forms import PostForm
+from posts.models import Post
 
 @login_required
 def list_post(request):
+    posts = Post.objects.all().order_by('-created')
     """List existing posts"""
     return render(
         request, 
@@ -46,3 +20,23 @@ def list_post(request):
             'posts': posts
         }
         )
+
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('feed')
+    else:
+        form = PostForm()
+    
+    return render(
+        request=request,
+        template_name='posts/new.html',
+        context={
+            'form': form,
+            'user': request.user,
+            'profile': request.user.profile
+        }
+    )
