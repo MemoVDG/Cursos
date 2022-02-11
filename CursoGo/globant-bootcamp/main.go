@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"hello-word/foo"
 )
@@ -12,6 +13,11 @@ func main() {
 	foo.Hi()
 	variadicFunction("Chucho", "Perez")
 	countdown(10)
+
+	// Creacion de errores, los errores pueden ser creados de diferentes maneras
+	var knowError = errors.New("Some error")
+	fmt.Errorf("Another error")
+	fmt.Println(knowError)
 }
 
 // defer -> ejecuta la sentencia al final de todo
