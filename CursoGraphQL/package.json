@@ -22,7 +22,7 @@
     "mongo": "^0.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.20",
     "standard": "^14.3.4"
   }
 }
